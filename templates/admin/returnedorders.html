@@ -1,0 +1,193 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+
+{% block body %}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
+
+
+  body{
+   background-color:#eee;
+   font-family: "Poppins", sans-serif;
+   font-weight: 300;
+  }
+
+  .height{
+   height: 12vh;
+  }
+  
+
+  .search{
+  position: relative;
+  box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+  right:14px;
+    
+  }
+
+  .search input{
+
+   height: 45px;
+   text-indent: 25px;
+   border: 2px solid #d6d4d4;
+
+
+  }
+
+
+  .search input:focus{
+
+   box-shadow: none;
+   border: 2px solid blue;
+
+
+  }
+
+  .search .fa-search{
+
+   position: absolute;
+   top: 20px;
+   left: 16px;
+
+  }
+
+  .search button{
+
+   position: absolute;
+   top: 1px;
+   right: 1px;
+   height: 43px;
+   width: 112px;
+   background: blue;
+   border-radius: 0;
+
+  }
+
+  .expandable-table thead tr th {     
+    background: #a03aa5;
+    padding: 10px;     
+    color: #ffffff;    
+    font-size: 14px;   }
+
+  .status-dropdown {
+    width: 150px; /* Adjust the width as needed */
+    background-color: #d1ecf1; /* Default background color */
+}
+
+.status-dropdown option[value="New"] {
+    background-color: #cce5ff; /* Custom background color for 'New' status */
+}
+
+.status-dropdown option[value="Accepted"] {
+    background-color: #d4edda; /* Custom background color for 'Accepted' status */
+}
+
+.status-dropdown option[value="Completed"] {
+    background-color: #d1e7dd; /* Custom background color for 'Completed' status */
+}
+
+.status-dropdown option[value="Cancelled"] {
+    background-color: #f8d7da; /* Custom background color for 'Cancelled' status */
+}
+
+</style>
+
+
+        <div class="card-body">
+            <h4 class="card-title">Manage Your Orders</h4>
+            <br>
+            
+            <br>
+            <br>
+            {% for message in messages  %}
+            <h6 class="text text-success">{{message}}</h6>
+            {% endfor %}
+            <br>
+            <div class="container">
+
+              <div class="row height d-flex justify-content-start align-items-center">
+        
+                <div class="col-md-8">
+        
+                  <div class="search">
+                    <i class="fa fa-search"></i>
+                    <form method="get" action=''>
+                      {% csrf_token %}
+                    <input type="text" class="form-control" name="search" placeholder="Search users here">
+                    <button class="btn btn-primary">Search</button>
+                    </form>
+                  </div>
+                  
+                </div>
+                
+              </div>
+          </div>
+            
+          <div class="row">
+            <div class="col-12">
+              <div class="table-responsive">
+                <table  class="display expandable-table" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>User</th>
+                     
+            
+                      <th>Order Number</th>
+                      <th>Product</th>
+                      <th>View Reason</th>
+                      <th>Edit status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in orders  %}
+                    <tr>
+                      
+                      <td>#{{forloop.counter}}</td>
+                      <td>{{order.user.username}}</td>
+                     
+                      {% if order.order  %}
+                      <td>{{order.order.order_number}}</td>
+                      {% endif %}
+
+                      {% if order.order_product %}
+                      <td>{{order.order_product.product.product_name}}</td>
+                      {% else %}
+                      <td>All</td>
+                      {% endif %}
+
+                      <td><a href='{% url "user_profile:view_returns" order.id %}' class="btn btn-outline-info btn-sm">view</a></td>
+                      <td ><a href="" data-bs-toggle="modal" data-bs-target="#addEmployeeModal-{{forloop.counter}}" class="btn btn-warning btn-sm" >Edit</a></td>
+                     
+                      
+                      
+                     
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+              </div>
+            </div>
+        
+            {% for order in orders   %}
+            <div id="addEmployeeModal-{{forloop.counter}}" class="modal fade">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Confirm Approval</h4>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>Are you sure you want to approve?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a href="{% url "user_profile:approve_return" order.id %}" class="btn btn-success">Approve</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                    {% endfor %}
+             
+
+{% endblock body %}

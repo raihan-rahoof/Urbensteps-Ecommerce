@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+
+
+<div class="container mt-5" style="margin-bottom:175px;">
+    {% if messages %}
+        <div class="alert alert-info">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card" style="margin-top:60px;">
+                <div class="card-header">Reset Password</div>
+
+                <div class="card-body">
+                    <!-- Form Start -->
+                    <form method="POST" action="{% url "userauth:forgot_password" %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_email">Enter you Username</label>
+                            <input type="text" name="username" class="form-control" id="id_email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_email">Email Address:</label>
+                            <input type="email" name="email" class="form-control" id="id_email" required>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-dark">Send Password Reset Email</button>
+                    </form>
+                    <!-- Form End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+{% endblock body %}

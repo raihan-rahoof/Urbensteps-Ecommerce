@@ -1,0 +1,155 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+
+{% block body %}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
+
+
+       body{
+        background-color:#eee;
+        font-family: "Poppins", sans-serif;
+        font-weight: 300;
+       }
+
+       .height{
+        height: 12vh;
+       }
+       
+
+       .search{
+       position: relative;
+       box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+       right:14px;
+         
+       }
+
+       .search input{
+
+        height: 45px;
+        text-indent: 25px;
+        border: 2px solid #d6d4d4;
+
+
+       }
+
+
+       .search input:focus{
+
+        box-shadow: none;
+        border: 2px solid blue;
+
+
+       }
+
+       .search .fa-search{
+
+        position: absolute;
+        top: 20px;
+        left: 16px;
+
+       }
+
+       .search button{
+
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        height: 43px;
+        width: 112px;
+        background: blue;
+        border-radius: 0;
+
+       }
+  
+</style>
+
+
+<div class="card-body">
+    <h4 class="card-title">Users Table</h4>
+    <p class="card-description">
+      Search for users
+    </p>
+    <div class="container">
+
+      <div class="row height d-flex justify-content-start align-items-center">
+
+        <div class="col-md-8">
+
+          <div class="search">
+            <i class="fa fa-search"></i>
+            <form method="get" action={% url "adminside:users_mgmt" %}>
+              {% csrf_token %}
+            <input type="text" class="form-control" name="search" placeholder="Search users here">
+            <button class="btn btn-primary">Search</button>
+            </form>
+          </div>
+          
+        </div>
+        
+      </div>
+  </div>
+    
+    <div class="table-responsive pt-3">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>
+              id
+            </th>
+            <th>
+              Username
+            </th>
+            <th>
+              Email
+            </th>
+            <th>
+              Status
+            </th>
+            <th>
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for x in users %}
+                    <tr>
+                        <td>
+                        {{forloop.counter}}
+                        </td>
+                        <td>
+                        {{x.username}}
+                        </td>
+                        <td>
+                        {{x.email}}
+                        </td>
+                        
+                        <td>
+                          {% if x.is_active  %}
+                            <label class="text text-success fs-6">Active</label>
+                        
+                        {% else %}
+                        
+                            <label class="text text-danger fs-6 ">Blocked</label>
+                        {% endif %}
+                        </td>
+                        
+
+                        
+                        <td>
+                        {% if x.is_active  %}
+                            <a href="{% url 'adminside:user_block' x.id %}" class="btn btn-danger btn-sm">Block</a>
+                        {% else %}
+                            <a href="{% url 'adminside:user_unblock' x.id %}" class="btn btn-success btn-sm">Unblock</a>
+                        {% endif %}
+                        </td>
+                        
+                    </tr>
+          {% endfor %}
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+{% endblock body %}

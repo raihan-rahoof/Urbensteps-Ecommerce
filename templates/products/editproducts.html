@@ -1,0 +1,148 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+
+{% block body %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">   
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Edit Products</h4>
+            <p class="card-description">
+            The information that you enter here will be appeard on Products details page , so wisely enter all details
+            </p>
+            <br>
+            {% for message in messages %}
+        
+            <h6 class="text text-danger">{{message}}</h6>
+        
+            {% endfor %}
+            <br>
+
+    <!--------------------------------------------form starts------------------------------------------------------------------------>        
+            
+        <form class="forms-sample" method="post" action='{% url "products:update_product" product.id %}' enctype="multipart/form-data">
+                {% csrf_token %}
+
+            <div class="form-group">
+                <label for="exampleInputName1">Product Name</label>
+                <input type="text" value="{{product.product_name}}" name="product_name" class="form-control" id="exampleInputName1" placeholder="Name">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail3">Category</label>
+                <select class="form-control" name="category" id="exampleSelectGender">
+                    {% for x in categories %}
+                    <option value="{{x.id}}" {% if x.id == product.category.id %}selected{% endif %}>{{x.name}}</option>
+                    {% endfor %}
+                </select>   
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail3">Sub Category <span> ( eg: running , casuals , formals ) </span> </label>
+                <select class="form-control" value="{{product.sub_category}}" name="sub_category" id="exampleSelectGender">
+                    <option>Casuals</option>
+                    <option>Formals</option>
+                    <option>Running</option>
+                    <option>Boots</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleTextarea1">Description</label>
+                <textarea class="form-control" value="" name="description" pattern=".{100,}" title="The description must be at least 100 characters" id="exampleTextarea1" rows="4">{{product.description}}</textarea>
+                <span id="exampleTextarea"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword4">Available stocks </label>
+                <input type="number" value="{{product.stock}}" name="stocks" class="form-control" id="exampleInputPassword4" placeholder="">
+            </div>
+            
+            <div class="form-group">
+                <label for="exampleInputPassword4">Availabel Sizes </label>
+                <input type="text" value="{{product.sizes}}" name="sizes" class="form-control" id="exampleInputPassword4" placeholder="">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword4">Select available Brand</label>
+                <select class="form-control" name="brand" id="exampleSelectGender">
+                        {% for x in brand %}
+                        <option value="{{x.id}}" {% if x.id == product.brand.id %}selected{% endif %}>{{x.name}}</option>
+                        {% endfor %}
+                </select>  
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword4">Select Offer</label>
+                <select class="form-control" name="offer" id="exampleSelectGender">
+                    <option value="">Select offer</option>
+                    {% for x in offers %}
+                        <option value="{{ x.id }}" {% if x.id == product.offer.id %}selected{% endif %}>{{ x.name }}</option>
+                    {% endfor %}
+                </select>  
+            </div>
+            
+
+
+            <div class="form-group">
+                <label for="exampleInputPassword4">Price</label>
+                <input type="number" value="{{product.price}}" name="price" class="form-control" id="exampleInputPassword4" placeholder="">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword4">Return Upto</label>
+                <input type="text" value="{{product.return_time}}" name="return" class="form-control" id="exampleInputPassword4" placeholder="">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword4">Material</label>
+                <input type="text" value="{{product.meterial}}" name="material" class="form-control" id="exampleInputPassword4" placeholder="">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword4">Warranty Upto</label>
+                <input type="text" value="{{product.warranty}}" name="warranty" class="form-control" id="exampleInputPassword4" placeholder="">
+            </div>
+
+            <div class="form-group">
+                <label>Upload Thumbnail image</label>
+                <input value="{{product.product_image}}" name="product_image" type="file" accept="image/png, image/jpeg, image/svg, image/avif, image/WEBP" class="form-control"id="image-input"  accept="image/*" />
+                <small id="image-error" class="text-danger text-center"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Add other Images (max:3)</label>
+                <input value="{{product.additional_images}}" name="additional_images" multiple type="file" accept="image/png, image/jpeg, image/svg, image/avif, image/WEBP" class="form-control"id="image-input"  accept="image/*" />
+                <small id="image-error" class="text-danger text-center"></small>
+            </div>
+
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" {% if product.special %}checked{% endif %} name="special" class="form-check-input">
+                    Special Product
+                </label>
+            </div>
+            
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" {% if product.offer_pro %}checked{% endif %} name="offer_pro" class="form-check-input">
+                    Offered Product
+                </label>
+            </div>
+            
+
+            <br>
+            
+            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            <button class="btn btn-light">Cancel</button>
+        </form>
+
+     <!-------------------------------------------------form ends ------------------------------------------------------------------------>
+
+        </div>
+       </div>
+  </div>  
+
+</div>
+
+{% endblock body %}

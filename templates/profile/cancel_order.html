@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container-xl px-4 mt-4" style="margin-bottom:60px;">
+    <!-- Add your existing content here -->
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Cancel Order</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="cancelReason" class="form-label">Reason for Cancellation</label>
+                            <textarea class="form-control" min=50 required id="cancelReason" name="cancel_reason" rows="4" required></textarea>
+                            {% for x in messages %}
+                            <label style="color:red;" for="cancelReason" class="form-label">{{x}}</label>
+                            {% endfor %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-danger">Cancel Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

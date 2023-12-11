@@ -1,0 +1,249 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+
+{% block body %}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
+
+
+  body{
+   background-color:#eee;
+   font-family: "Poppins", sans-serif;
+   font-weight: 300;
+  }
+
+  .height{
+   height: 12vh;
+  }
+  
+
+  .search{
+  position: relative;
+  box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+  right:14px;
+    
+  }
+
+  .search input{
+
+   height: 45px;
+   text-indent: 25px;
+   border: 2px solid #d6d4d4;
+
+
+  }
+
+
+  .search input:focus{
+
+   box-shadow: none;
+   border: 2px solid blue;
+
+
+  }
+
+  .search .fa-search{
+
+   position: absolute;
+   top: 20px;
+   left: 16px;
+
+  }
+
+  .search button{
+
+   position: absolute;
+   top: 1px;
+   right: 1px;
+   height: 43px;
+   width: 112px;
+   background: blue;
+   border-radius: 0;
+
+  }
+
+  .status-dropdown {
+    width: 150px; /* Adjust the width as needed */
+    background-color: #d1ecf1; /* Default background color */
+}
+
+.status-dropdown option[value="New"] {
+    background-color: #cce5ff; /* Custom background color for 'New' status */
+}
+
+.status-dropdown option[value="Accepted"] {
+    background-color: #d4edda; /* Custom background color for 'Accepted' status */
+}
+
+.status-dropdown option[value="Completed"] {
+    background-color: #d1e7dd; /* Custom background color for 'Completed' status */
+}
+
+.status-dropdown option[value="Cancelled"] {
+    background-color: #f8d7da; /* Custom background color for 'Cancelled' status */
+}
+
+</style>
+
+
+        <div class="card-body">
+            <h4 class="card-title">Manage Your Orders</h4>
+            <br>
+            
+            <br>
+            <br>
+            {% for message in messages  %}
+            <h6 class="text text-success">{{message}}</h6>
+            {% endfor %}
+            <br>
+            <div class="container">
+
+              <div class="row height d-flex justify-content-start align-items-center">
+        
+                <div class="col-md-8">
+        
+                  <div class="search">
+                    <i class="fa fa-search"></i>
+                    <form method="get" action=''>
+                      {% csrf_token %}
+                    <input type="text" class="form-control" name="search" placeholder="Search users here">
+                    <button class="btn btn-primary">Search</button>
+                    </form>
+                  </div>
+                  
+                </div>
+                
+              </div>
+          </div>
+            
+          <div class="row">
+            <div class="col-12">
+              <div class="table-responsive">
+                <table  class="display expandable-table" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>User</th>
+                      <th>email</th>
+                      <th>State</th>
+                      <th>District</th>
+                      <th>View more</th>
+                      <th>Order Status</th>
+                      <th>Payment status</th>
+                      <th>Edit status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in orders  %}
+                    <tr>
+                      {% if order.status == 'Cancel' %}
+                      <td><s style ="color:red;">#{{order.order_number}}</s></td>
+                      <td><s style ="color:red;">{{order.user.username}}</s></td>
+                      <td><s style ="color:red;">{{order.email}}</s></td>
+                      <td><s style ="color:red;">{{order.state}}</s></td>
+                      <td><s style ="color:red;">{{order.district}}</s></td>
+                      <td><a href='{% url "orders:view_order" order.id %}' class="btn btn-outline-info btn-sm">view</a></td>
+                      <td style = "color:red;">{{order.status}}</td>
+                      <td style = "color:red;">{{order.payment_status}}</td>
+                      <td ><a href="" data-bs-toggle="modal" data-bs-target="#addEmployeeModal-{{forloop.counter}}" class="btn btn-warning btn-sm" >Edit</a></td>
+                     
+                      {% elif order.payment_status == 'Completed' and order.status == 'Deliverd' %}
+                      <td style="color:green;">#{{order.order_number}}</td>
+                      <td style="color:green;">{{order.user.username}}</td>
+                      <td style="color:green;">{{order.email}}</td>
+                      <td style="color:green;">{{order.state}}</td>
+                      <td style="color:green;">{{order.district}}</td>
+                      <td><a href='{% url "orders:view_order" order.id %}' class="btn btn-outline-info btn-sm">view</a></td>
+                      <td style="color:green;">{{order.status}}</td>
+                      <td style="color:green;">{{order.payment_status}}</td>
+                      <td><a href="" data-bs-toggle="modal" data-bs-target="#addEmployeeModal-{{forloop.counter}}" class="btn btn-warning btn-sm" >Edit</a></td>
+                      
+                      {% elif order.status == 'Return' %}
+                      <td style="color:blue;">#{{order.order_number}}</td>
+                      <td style="color:blue;">{{order.user.username}}</td>
+                      <td style="color:blue;">{{order.email}}</td>
+                      <td style="color:blue;">{{order.state}}</td>
+                      <td style="color:blue;">{{order.district}}</td>
+                      <td><a href='{% url "orders:view_order" order.id %}' class="btn btn-outline-info btn-sm">view</a></td>
+                      <td style="color:blue;">{{order.status}}</td>
+                      <td style="color:blue;">{{order.payment_status}}</td>
+                      <td><a href="" data-bs-toggle="modal" data-bs-target="#addEmployeeModal-{{forloop.counter}}" class="btn btn-warning btn-sm" >Edit</a></td>
+
+                      {% else %}
+                      <td>#{{order.order_number}}</td>
+                      <td>{{order.user.username}}</td>
+                      <td>{{order.email}}</td>
+                      <td>{{order.state}}</td>
+                      <td>{{order.district}}</td>
+                      <td><a href='{% url "orders:view_order" order.id %}' class="btn btn-outline-info btn-sm">view</a></td>
+                      <td>{{order.status}}</td>
+                      <td>{{order.payment_status}}</td>
+                      <td><a href="" data-bs-toggle="modal" data-bs-target="#addEmployeeModal-{{forloop.counter}}" class="btn btn-warning btn-sm" >Edit</a></td>
+                      
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+              </div>
+            </div>
+        
+            {% for order in orders   %}
+                    <div id="addEmployeeModal-{{forloop.counter}}" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action='{% url "orders:change_status" order.id %}' method="post" >
+                                {% csrf_token %}
+                                    <div class="modal-header">						
+                                        <h4 class="modal-title">Edit Status</h4>
+                                        
+                                    </div>
+                    
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>Payment status</label>
+                                            
+                                            
+                                                <select class="form-select status-dropdown" name="payment-status" >
+                                                    <option value="Pending" {% if order.payment_status == 'New' %}selected{% endif %}>Pending</option>
+                                                    <option value="Completed" {% if order.payment_status == 'Completed' %}selected{% endif %}>Completed</option>
+                                                    
+                                                </select>
+                                        </div>
+                    
+                                        <div class="form-group">
+                                            <label>Order status</label>
+                                            
+
+                                                <select class="form-select status-dropdown" name="order-status" id="orderStatus">
+                                                    {% for choice in order_status_choices %}
+                                                    <option value="{{ choice.0 }}" {% if choice.0 == order.status %}selected{% endif %}>
+                                                        {{ choice.1 }}
+                                                    </option>
+                                                {% endfor %}
+                                                </select>
+                                            
+                                            
+                                        </div>
+                                        <div style="margin-bottom: 50px;">
+                                          <a href="{% url "orders:soft_remove" order.id %}" class="btn btn-warning btn-sm">Remove</a>
+                                          <a href="{% url "orders:order_delete" order.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                           
+                                      </div>
+
+                                        <div class="modal-footer">
+                                            <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel">
+                                            <input type="submit" class="btn btn-success" value="Save changes"> 
+                                             
+                                        </div>
+
+                                    </div>
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+             
+
+{% endblock body %}

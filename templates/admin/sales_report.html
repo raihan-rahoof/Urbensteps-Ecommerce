@@ -1,0 +1,70 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+
+{% block body %}
+
+<div class="container mt-4">
+    <h2>Sales Report</h2>
+    <form method="get" action="{% url 'adminside:sales_report' %}">
+        <!-- Your existing form fields for start_date, end_date, and status -->
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="start_date">Start Date</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="end_date">End Date</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="All">All</option>
+                    <option value="Cancel">Caneled</option>
+                    <option value="Return">Returned</option>
+                    <option value="Deliverd">Deliverd</option>
+                    <!-- Add other status options as needed -->
+                </select>
+            </div>
+        </div>
+
+        <!-- ... -->
+
+        <button type="submit" class="btn btn-primary">Generate Report</button>
+        <a href="{% url "adminside:sales_report_pdf" %}" class="btn btn-secondary">Download PDF</a>
+    </form>
+    
+    <!-- Display Sales Data Table -->
+    <table class="table mt-4">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Order Number</th>
+            <th>Order Date</th>
+            <th>Status</th>
+            <th>Total Amount</th>
+            <th>Tax</th>
+            <th>Shipping</th>
+            <th>Grand Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sale in sales %}
+            <tr>
+                <td>{{ sale.id }}</td>
+                <td>{{ sale.user.username }}</td>
+                <td>{{ sale.order_number }}</td>
+                <td>{{ sale.created_at }}</td>
+                <td>{{ sale.status }}</td>
+                <td>$ {{ sale.total_amount }}</td>
+                <td>$ {{ sale.tax }}</td>
+                <td>$ {{ sale.shipping }}</td>
+                <td>$ {{ sale.grand_total }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock body %}

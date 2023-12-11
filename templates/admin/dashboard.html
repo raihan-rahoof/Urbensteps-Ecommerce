@@ -1,0 +1,157 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+
+{% block body %}
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-12 grid-margin">
+              <div class="row">
+                <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                  <h3 class="font-weight-bold">Welcome To Dashboard</h3>
+                  <h6 class="font-weight-normal mb-0">All systems are running smoothly!</h6>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card tale-bg">
+                <div class="card-people mt-auto">
+                  <img src="{% static "admin/images/dashboard/people.svg" %}" alt="people">
+                  <div class="weather-info">
+                    <div class="d-flex">
+                      <div>
+                        <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>31<sup>C</sup></h2>
+                      </div>
+                      <div class="ml-2">
+                        <h4 class="location font-weight-normal">Bangalore</h4>
+                        <h6 class="font-weight-normal">India</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          <div class="row">
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-title">Payment Statistics</p>
+                  <p class="font-weight-500">The Most Used payment Methods to purchase items from our website </p>
+                  <div style="    height: 35rem;">
+                  <canvas id="PaymentChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                 <div class="d-flex justify-content-between">
+                  <p class="card-title">Order overview</p>
+                 
+                 </div>
+                  <p class="font-weight-500">The overview of cancelled orders, deliverd orders,and returned orders</p>
+                  <div>
+                    <canvas id="orders"></canvas>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card position-relative">
+                <div class="card-body">
+                  <p class="card-title">Sales statistics</p>
+                  <p class="font-weight-500">Get the overview of sales by this chart  </p>
+                  <div>
+                  <canvas id="saleschart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+          
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+          <script>
+            const ctx = document.getElementById('PaymentChart');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: {{ labels|safe }},
+                    datasets: [{
+                        label: '# of Orders',
+                        data: {{ data|safe }},
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+          </script>
+          
+            <script>
+              const orders = document.getElementById('orders');
+              new Chart(orders, {
+                  type: 'doughnut',
+                  data: {
+                      labels: {{ status_labels|safe }},
+                      datasets: [{
+                          label: '# of Products',
+                          data: {{ status_data|safe }},
+                          borderWidth: 1
+                      }]
+                  },
+                  options: {
+                      scales: {
+                          y: {
+                              beginAtZero: true
+                          }
+                      }
+                  }
+              });
+          </script>
+
+          <script>
+            const sales = document.getElementById('saleschart');
+            new Chart(sales, {
+              type: 'line',
+              data: {
+                  labels: {{ line_labels|safe }},
+                  datasets: [{
+                      label: 'Total Amount',
+                      data: {{ line_data|safe }},
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: true,
+                          callback: function(value, index, values) {
+                              return '$' + value;  // Format y-axis values as currency
+                          }
+                      }
+                  }
+              }
+          });
+          </script>
+          
+          
+          
+  
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        {% endblock body %}

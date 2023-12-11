@@ -1,0 +1,190 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+
+{% block body %}
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
+
+
+  body{
+   background-color:#eee;
+   font-family: "Poppins", sans-serif;
+   font-weight: 300;
+  }
+
+  .height{
+   height: 12vh;
+  }
+  
+
+  .search{
+  position: relative;
+  box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+  right:14px;
+    
+  }
+
+  .search input{
+
+   height: 45px;
+   text-indent: 25px;
+   border: 2px solid #d6d4d4;
+
+
+  }
+
+
+  .search input:focus{
+
+   box-shadow: none;
+   border: 2px solid blue;
+
+
+  }
+
+  .search .fa-search{
+
+   position: absolute;
+   top: 20px;
+   left: 16px;
+
+  }
+
+  .search button{
+
+   position: absolute;
+   top: 1px;
+   right: 1px;
+   height: 43px;
+   width: 112px;
+   background: blue;
+   border-radius: 0;
+
+  }
+
+</style>
+
+
+        <div class="card-body">
+            <h4 class="card-title">Manage Your Products</h4>
+            <br>
+            <a href="{% url "products:add_products" %}" class="btn btn-primary btn-sm">
+                Add Products
+            </a>
+            <br>
+            <br>
+            {% for message in messages  %}
+            <h6 class="text text-success">{{message}}</h6>
+            {% endfor %}
+            <br>
+            <div class="container">
+
+              <div class="row height d-flex justify-content-start align-items-center">
+        
+                <div class="col-md-8">
+        
+                  <div class="search">
+                    <i class="fa fa-search"></i>
+                    <form method="get" action={% url "products:manage_products" %}>
+                      {% csrf_token %}
+                    <input type="text" class="form-control" name="search" placeholder="Search users here">
+                    <button class="btn btn-primary">Search</button>
+                    </form>
+                  </div>
+                  
+                </div>
+                
+              </div>
+          </div>
+            
+          <div class="row">
+            <div class="col-12">
+              <div class="table-responsive">
+                <table  class="display expandable-table" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Product Name</th>
+                      <th>Category</th>
+                      <th>Brand</th>
+                      <th>offer</th>
+                      <th>Status</th>
+                      <th>More</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for product in products  %}
+                    <tr>
+                      <td>{{forloop.counter}}</td>
+                      <td>{{product.product_name}}</td>
+                      <td>{{product.category}}</td>
+                      <td>{{product.brand}}</td>
+                      {% if product.offer %}
+                      <td class="text text-success">Available</td>
+                      {% else %}
+                      <td class="text text-danger">Unavailable</td>
+                      {% endif %}
+
+                      {% if product.stock > 0 and  product.is_available %}
+                      <td class="text text-success">Available</td>
+                      {% elif not product.is_available %}
+                      <td class="text text-warning">Removed</td>
+                      {% else %}
+                      <td class="text text-danger">Out of stock</td>
+                      {% endif %}
+
+
+                      <td><a href='{% url "products:view_product" product.id %}' class="btn btn-inverse-info btn-sm">view</td>
+                      <td>
+                        <a href="{% url "products:edit_products" product.id %}" class="btn btn-warning btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg>
+                        </a> 
+                        
+                        <a href="#deleteEmployeeModal-{{forloop.counter}}" data-toggle="modal" class="btn btn-danger btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                            </svg>
+                        </a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+              </div>
+            </div>
+        
+
+            {% for x in products %}
+                <div id="deleteEmployeeModal-{{forloop.counter}}" class="modal fade">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <form>
+                        <div class="modal-header">						
+                          <h4 class="modal-title">Delete Proudcts</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                          <p class="text fs-6">If you want to remove a Product from the site use Remove , else if you want to delete permently use delete </p>
+                          <p class="text text-dark fs-6"><small>The Delete action cannot be undone , All details of the product will be Lost</small></p>
+                        </div>
+                        <div class="modal-footer">
+                          {% if x.is_available %}
+                          <a href="{% url "products:remove_product" x.id %}" type="submit" class="btn btn-info">Remove</a>
+                          {% else %}
+                          <a href="{% url "products:remove_product" x.id %}" type="submit" class="btn btn-info">Make visible</a>
+                          {% endif %}
+                          <a href="{% url "products:delete_product" x.id %}" type="submit" class="btn btn-danger">delete</a>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+	          {% endfor %}
+
+
+{% endblock body %}

@@ -1,0 +1,242 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+   
+
+    <div class="f_cart_area pt-110 mb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-12">
+                    <div class="cart_table">
+                        <table>
+                            
+                            <tr> 
+                                <td>Product</td>
+                                <td></td>
+                                <td style="padding: 30px;" >price</td>
+                                <td>Quantity</td>
+                                <td style="padding: 30px;">Total</td>
+                                
+                               </tr>
+                            <tbody>
+                                {% for cart_item in cart_items %}
+                                <tr class="max-width-set">
+                                    <td>
+                                        <img src="{{cart_item.product.image.url}}" alt="">
+                                    </td>
+                                    {% if cart_item.product.stock <= 0 %}
+                                    <td class="text text-danger">Out of Stock</td>
+                                    {% else %}
+                                    <td>{{cart_item.product.product_name}}</td>
+                                    {% endif %}
+                                    {% if cart_item.product.offer or cart_item.product.category.offer %}
+                                    <td style="color:green;">$ {{cart_item.product.get_offer}} &nbsp<span style="color:red;"><s>${{cart_item.product.price}}</s><span></td>
+                                    
+                                    {% else %}
+                                    <td>$ {{cart_item.product.price}}</td>
+                                    {% endif %}
+                                    <td>
+
+
+                                    <div class="col">
+                                        <div class="input-group input-spinner" style="justify-content: center;">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-light changequantity" data-action="decrement" data-product-id="{{cart_item.product.id}}"  style="background-color:#e2e3e4;" type="button" id="button-plus" > <i class="fa fa-minus"></i> </button>
+                                            </div>
+                                            <input type="number" class="form-controls" min="1" readonly value="{{cart_item.quantity}}" id="product_qty{{cart_item.product.id}}" style="width: 76px; text-align: center;">
+                                            <div class="input-group-append">
+                                                <button  class="btn btn-light changequantity" data-action="increment" data-product-id="{{cart_item.product.id}}" style="background-color:#e2e3e4;" type="button" id="button-minus"> <i class="fa fa-plus"></i> </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    
+                                    </td>
+                                     <td>
+                                    <div id="singlePriceDisplay{{cart_item.product.id}}">
+                                       
+                                       $ {{cart_item.subtotal}}
+
+                                    </div>
+                                    </td>
+                                    <td class="width-set">
+                                        <a href="{% url 'cart:delete_cart_item' cart_item.product.id %}"><i
+                                            class="fal fa-times-circle"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr class="design-footer">
+                                    <td>
+                                        <input type="text" placeholder="Coupon Code">
+                                    </td>
+                                    <td><button type="submit">Apply Coupon</button></td>
+                                    <td colspan="3"><a href="#">update cart</a></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12">
+                    <div class="cart__acount">
+                        <h5>Cart totals</h5>
+                      <table>
+                        <tr class="first-child">
+                            <td>Tax</td>
+                            <td id="taxDisplay">${{tax}}</td>
+                        </tr>
+                        <tr class="first-child lastchild">
+                            <td>Shipping</td>
+                            <td>Shipping includes ${{shipping}}</td>
+                        </tr>
+                        <tr class="first-child">
+                            <td>Grand Total</td>
+                            <td>
+                                {% if tax == 0 %}
+                                    $
+                                {% else %}
+                                    <div id="grandTotalDisplay">${{grandtotal}}</div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                          <tr>   
+                              <td colspan="2">
+                               
+                                <a href="{% url "orders:checkout" %}"><input type="submit" value="procced to checkout"></a>
+                                
+                                {% for message in messages %}
+                                <p>{{message}}</p>
+                                {% endfor %}
+                               
+                              </td>
+                          </tr>
+                      </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Messages</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if messages %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if there are error messages
+        var errorMessages = "{% for message in messages %}{{ message }}{% endfor %}".trim();
+        if (errorMessages !== "") {
+            // Set the error message in the modal
+            document.getElementById('errorMessage').textContent = errorMessages;
+
+            // Show the error modal
+            var errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            errorModal.show();
+        }
+    });
+</script>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('.changequantity').off('click').click(function(e) {
+            e.preventDefault();
+            var action = $(this).data('action');
+            var productId = $(this).data('product-id');
+            var input = $('#product_qty' + productId);
+            var qty = parseInt(input.val(), 10) || 0;
+            console.log(productId);
+            if (action === 'increment') {
+                qty += 1;
+            } else if (action === 'decrement' && qty > 0) {
+                qty -= 1;
+            }
+
+            $.ajax({
+                method: "POST",
+                url: "{% url 'cart:update_cart' %}",
+                data: {
+                    'product_id': productId,
+                    'quantity': qty,
+                    'action': action,
+                    'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+                },
+                success: function(response) {
+                    if (response.status === 'Requested quantity exceeds available quantity') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.status,
+                            footer: '<a href="">Why do I have this issue?</a>'
+                        });
+
+                    } else if (response.status === 'Zero quantity not allowed' || response.status === 'Invalid request method') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.status,
+                            footer: '<a href="">Why do I have this issue?</a>'
+                        });
+                    } else {
+                        // Update single price and grand total
+                        if (qty === 0) {
+                            // If the quantity becomes zero, set it to 1
+                            qty = 1;
+                        }
+
+                        // Update the quantity in the text field
+                        input.val(qty);
+
+                        // Update single price and grand total
+                        $('#singlePriceDisplay' + productId).text(response.single_price);
+                        $('#grandTotalDisplay').text(response.grand_total);
+                        if (response.tax !== undefined) {
+                            $('#taxDisplay').text('$' + response.tax);
+                        } else {
+                            $('#taxDisplay').text('$6.00');
+                        }
+                        $('#shippingDisplay').text('Shipping includes $' + response.shipping);
+                    }
+                },
+                error: function(error) {
+                    alert("Error updating cart.");
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+    {% endblock body %}

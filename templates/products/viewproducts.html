@@ -1,0 +1,92 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+
+{% block body %}
+
+
+<div class="col-lg-6 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Products Details Table</h4>
+      <p class="card-description">
+        Add class <code>.table</code>
+      </p>
+
+      
+
+      <div class="table-responsive">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td><strong> Name :</strong></td>
+              <td>{{product.product_name}}</td>
+            </tr>
+            <tr>
+              <td><strong>Category :</strong></td>
+              <td>{{product.category}}</td>
+            </tr>
+            <tr>
+              <td><strong>Subcategory :</strong></td>
+              <td>{{product.subcategory}}</td>
+            </tr>
+            <tr>
+              <td><strong>Brand :</strong></td>
+              <td>{{product.brand}}</td>
+            </tr>
+            <tr>
+              <td><strong>Description :</strong></td>
+              <td>{{product.description}}</td>
+            </tr>
+            <tr>
+              <td><strong>Available Sizes :</strong></td>
+              <td>{{product.sizes}}</td>
+            </tr>
+            <tr>
+              <td><strong>Quantity :</strong></td>
+              <td>{{product.stock}}</td>
+            </tr>
+            <tr>
+              <td><strong>Price :</strong></td>
+              <td><p class="text text-success h4">${{product.price}}</p> </td>
+            </tr>
+            <tr>
+              <td><strong>Meterial :</strong></td>
+              <td>{{product.meterial}}</td>
+            </tr>
+            <tr>
+              <td><strong>Warranty :</strong></td>
+              <td>{{product.warranty}}</td>
+            </tr>
+            <tr>
+              <td><strong>Return Time :</strong></td>
+              <td>{{product.return_time}}</td>
+            </tr>
+            <tr>
+              <td><strong>Has offer :</strong></td>
+              <td>{{product.offer_pro}}</td>
+            </tr>
+            <tr>
+              <td><strong>Limited Edition :</strong></td>
+              <td>{{product.special}}</td>
+            </tr>
+            <tr>
+              <td><strong>Thumbnail Image :</strong></td>
+              <td><img src="{{product.image.url}}" style="height:303px;  width:253px; border-radius:0%"  alt=""></td>
+            </tr>
+            <tr>
+              <td><strong>Additional Images :</strong></td>
+              <td>{% for image in images  %}
+                      <img src="{{image.images.url}}" style="height:303px;  width:253px; border-radius:0%"  >
+              {% endfor %}</td>
+
+              
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>  
+
+{% endblock body %}

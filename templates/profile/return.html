@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container-xl px-4 mt-4" style="margin-bottom:60px;">
+    <!-- Add your existing content here -->
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Return Order</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url "user_profile:return_order" order.id %}">
+                        {% csrf_token %}
+                        
+                     
+                        <div class="mb-3">
+                            <label for="refundMethod" class="form-label">If you want to return only one product just select that product else the whole product will be returned </label>
+                            <select class="form-select"  name="item" required>
+                                <option value="" selected disabled > Select what to return</option>
+                                <option value="All"> All</option>
+                                {% for x in order_products %}
+                                <option value="{{x.id}}">{{x.product.product_name}}</option>
+                                {% endfor %}
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cancellationReason" class="form-label">Cancellation Reason</label>
+                            <select class="form-select" id="cancellationReason" name="cancellation_reason" required>
+                                <option value="" selected disabled>Select a reason</option>
+                                <option value="unavailable">Product is unavailable</option>
+                                <option value="change_mind">Changed my mind</option>
+                                <option value="size_not_correct">Incorrect Size</option>
+                                <option value="item_damaged">Item Damaged</option>
+                                <option value="wrong_color">Wrong Product</option>
+                                <option value="received_late">Received Late</option>
+                                <option value="found_cheaper">Found Cheaper Price Elsewhere</option>
+
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+
+                        <!-- Reason for cancellation textarea -->
+                        <div class="mb-3">
+                            <label for="cancelReason" class="form-label">Reason for Cancellation</label>
+                            <textarea class="form-control" min=50 required id="cancelReason" name="detail_reason" rows="4" required></textarea>
+
+                            {% for x in messages %}
+                                <label style="color:red;" for="cancelReason" class="form-label">{{x}}</label>
+                            {% endfor %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-danger">Return</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

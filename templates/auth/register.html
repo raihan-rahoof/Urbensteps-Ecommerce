@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+
+
+
+    <!-- breadcrumb area start -->
+    <div class="page-layout about" data-background="{% static "assets/img/slider/img-revo11.jpg" %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div class="breadcrumb-area text-center">
+                        <h2 class="page-title">REGISTER</h2>
+                            <div class="breadcrumb-menu">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center">
+                                    <li class=""><a href="index.html">Home</a>&nbsp / &nbsp</li>
+                                    
+                                    <li class=""><a href="login.html">Register</a></li>
+                                </ol>
+                            </nav>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+
+    <div class="login_register_area">
+        <div class="container">
+            <div class="row gx-5">
+                
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <h3 class="title-7">register</h3>
+                    <div class="login_wrapper login_wrapper_2">
+                        <form action="" method="post">
+                          {% csrf_token %}
+                            <div class="input_wrap">
+                                <label>Username<span>*</span></label>
+                                <input type="text" id="username" name="username" pattern="[a-zA-Z0-9]{5,15}" title="Username must be alphanumeric and between 5-15 characters" >
+                                <span id="usernameFeedback"></span>
+                            </div>
+                            <div class="input_wrap">
+                                <label>Gender<span>*</span></label>
+                                <select class="form-control" id="gender" name="gender" pattern="male|female|other" title="Please enter 'male', 'female', or 'other'" >
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="female">Others</option>
+                                </select>
+                                <span id="genderFeedback"></span>
+                            </div>
+                            <div class="input_wrap">
+                                <label>Email address<span>*</span></label>
+                                <input type="email" name="email" id="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" title="Please enter a valid email address" >
+                                <span id="emailFeedback"></span>
+                            </div>
+                            <div class="input_wrap">
+                                <label>Password<span>*</span></label>
+                                <input type="Password" name="password1" id="password1" name="password1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"  title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters"  >
+                                <span id="passwordFeedback"></span>
+                            </div>
+                            <div class="input_wrap">
+                                <label>Confirm password<span>*</span></label>
+                                <input type="password" name="password2">
+                            </div>
+                            
+                            <div class="input_wrap">
+                                <label>Do you have a Refferal code<span>*</span></label>
+                                <input type="text" name="refferal_code" placeholder="Not required(Optional)">
+                            </div>
+                            
+                            
+
+                            <div class="input_wrap input_wrap_3">
+                              {% for message in messages %}
+                                <p class="mb-30 text text-danger">{{message}}</p>
+                                {% endfor %}
+                                <button type="submit" style="width:29%;">register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          function setupValidation(inputId, feedbackId) {
+            const inputElem = document.getElementById(inputId);
+            const feedbackElem = document.getElementById(feedbackId);
+      
+            inputElem.addEventListener('input', function() {
+              if (inputElem.validity.patternMismatch) {
+                feedbackElem.textContent = inputElem.title;
+              } else {
+                feedbackElem.textContent = ''; // Clear the error message if input matches the pattern
+              }
+            });
+          }
+      
+          // Set up validation for each input
+          setupValidation('username', 'usernameFeedback');
+          setupValidation('email', 'emailFeedback');
+          setupValidation('gender', 'genderFeedback');
+          setupValidation('password1', 'passwordFeedback');
+        });
+      </script>
+      
+    
+
+{% endblock body %}

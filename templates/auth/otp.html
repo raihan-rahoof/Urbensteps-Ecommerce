@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+    <!-- breadcrumb area start -->
+    <div class="page-layout about" data-background="{% static "assets/img/slider/shop.jpg" %}">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div class="breadcrumb-area text-center">
+                        <h2 class="page-title">OTP</h2>
+                            <div class="breadcrumb-menu">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center">
+                                    <li class=""><a href="index.html">Home</a>&nbsp / &nbsp</li>
+                                    
+                                    <li class=""><a href="login.html">My account</a></li>
+                                </ol>
+                            </nav>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+
+    <div class="login_register_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <h3 class="title-7">OTP</h3>
+                    <div class="login_wrapper" style="padding: 80px 118px;">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="input_wrap">
+                                <label>Enter your OTP Here <span>*</span></label>
+                                <input type="num" name="otp">
+                            </div>
+                            <span class="mb-10 pt-15">A password will be sent to your email address.</span>
+                                <p class="mb-30"></p>
+                                {% for message in messages %}
+                                <p class="mb-30">{{message}}</p>
+                                {% endfor %}
+                            
+                            <div class="input_wrap" style="width:27%;">
+                                <button type="submit">log in</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}

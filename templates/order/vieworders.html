@@ -1,0 +1,264 @@
+{% extends "admin/adminbase.html" %}
+{% load static %}
+
+{% block body %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Order details</h4>
+                    <p class="card-description">
+                      The below is the user address and details
+                    </p>
+                    <form class="forms-sample">
+                      <div class="form-group">
+                        <label for="exampleInputName1">UserName</label>
+                        <input type="text" value="{{order.user}}" class="form-control" disabled id="exampleInputName1" placeholder="Name">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail3">Full name</label>
+                        <input type="text" value="{{order.first_name}} {{order.last_name}}" class="form-control" disabled id="exampleInputEmail3" placeholder="Email">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword4">Email</label>
+                        <input type="email" value="{{order.email}}" class="form-control" disabled id="exampleInputPassword4" placeholder="Password">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleSelectGender">Mobile 1</label>
+                        <input type="text" value="{{order.phone}} " class="form-control" disabled id="exampleInputEmail3" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleSelectGender">Mobile 2</label>
+                            <input type="text" value="{{order.phone2}} " class="form-control" disabled id="exampleInputEmail3" placeholder="Email">
+                            </div>
+                      
+                      <div class="form-group">
+                        <label for="exampleTextarea1">Address</label>
+                        <textarea class="form-control" disabled id="exampleTextarea1" rows="4">{{order.address_line_1}}, {{order.hometown}} , {{order.district}} ,{{order.state}} , {{order.zipcode}}</textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputName1">Total Price</label>
+                        <input type="text" value="${{order.order_total}}" class="form-control" disabled id="exampleInputName1" placeholder="Name">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputName1">Payment Method</label>
+                        <input type="text" value="{{order.payment}}" class="form-control" disabled id="exampleInputName1" placeholder="Name">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputName1">Payment status</label>
+                        <input type="text" value="{{order.payment_status}}" class="form-control" disabled id="exampleInputName1" placeholder="Name">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputName1">Tax</label>
+                        <input type="text" value="${{order.tax}}" class="form-control" disabled id="exampleInputName1" placeholder="Name">
+                      </div>
+
+
+
+                      
+                    </form>
+                  </div>
+                </div>
+              </div>
+        </div>
+        
+ <!-- Product Details Table -->
+ {% for x in product %}
+ {% if x.status == 'Cancelled' %}
+ <div class="col-lg-12  stretch-card" style="    margin-bottom: 50px;">
+  
+    <div class="card">
+     
+      <div class="card-body">
+           
+        
+  
+            <div class="table-responsive">
+                
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td><strong> Name :</strong></td>
+                        <td><s style="color: blue;">{{x.product.product_name}}</s></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Category :</strong></td>
+                        <td><s style="color: blue;">{{x.product.category}}</s></s></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Subcategory :</strong></td>
+                        <td><s style="color: blue;">{{x.product.subcategory}}</s></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quantity:</strong></td>
+                        <td><s style="color: blue;">{{x.quantity}}</s></td>
+                    </tr>
+                    <tr>
+                        <td><strong>price:</strong></td>
+                        <td><s style="color: blue;">{{x.product_price}}</s></td>
+                    </tr>
+                    <tr>
+                      <td><strong>status:</strong></td>
+                      {% if x.status == 'Cancelled' %}
+                      <td style="color:blue;"><h4><b>{{x.status}}</b></h4></td>
+                      {% else %}
+                      <td>{{x.status}}</td>
+                      {% endif %}
+                  </tr>
+                    <tr>
+                        <td><strong>Thumbnail Image :</strong></td>
+                        <td><img src="{{x.product.image.url}}" style="height: 254px;width: 229px;border-radius: 96%;"  alt=""></td>
+                    </tr>
+                
+                
+    
+                    
+                
+                
+                </tbody>
+                </table>
+            
+         </div>
+      </div>
+      
+    </div>
+   
+</div>  
+{% elif x.status == 'Returned' %}
+<div class="col-lg-12  stretch-card" style="    margin-bottom: 50px;">
+  
+  <div class="card">
+   
+    <div class="card-body">
+         
+      
+
+          <div class="table-responsive">
+              
+              <table class="table">
+                  <tbody>
+                  <tr>
+                      <td><strong> Name :</strong></td>
+                      <td><s style="color: blue;">{{x.product.product_name}}</s></td>
+                  </tr>
+                  <tr>
+                      <td><strong>Category :</strong></td>
+                      <td><s style="color: blue;">{{x.product.category}}</s></s></td>
+                  </tr>
+                  <tr>
+                      <td><strong>Subcategory :</strong></td>
+                      <td><s style="color: blue;">{{x.product.subcategory}}</s></td>
+                  </tr>
+                  <tr>
+                      <td><strong>Quantity:</strong></td>
+                      <td><s style="color: blue;">{{x.quantity}}</s></td>
+                  </tr>
+                  <tr>
+                      <td><strong>price:</strong></td>
+                      <td><s style="color: blue;">{{x.product_price}}</s></td>
+                  </tr>
+                  <tr>
+                    <td><strong>status:</strong></td>
+                    {% if x.status == 'Cancelled' %}
+                    <td style="color:blue;"><h4><b>{{x.status}}</b></h4></td>
+                    {% else %}
+                    <td><b>{{x.status}}</b></td>
+                    {% endif %}
+                </tr>
+                  <tr>
+                      <td><strong>Thumbnail Image :</strong></td>
+                      <td><img src="{{x.product.image.url}}" style="height: 254px;width: 229px;border-radius: 96%;"  alt=""></td>
+                  </tr>
+              
+              
+  
+                  
+              
+              
+              </tbody>
+              </table>
+          
+       </div>
+    </div>
+    
+  </div>
+ 
+</div>  
+{% else %}
+<div class="col-lg-12  stretch-card" style="    margin-bottom: 50px;">
+  
+  <div class="card">
+   
+    <div class="card-body">
+         
+      
+
+          <div class="table-responsive">
+              
+              <table class="table">
+                  <tbody>
+                  <tr>
+                      <td><strong> Name :</strong></td>
+                      <td>{{x.product.product_name}}</td>
+                  </tr>
+                  <tr>
+                      <td><strong>Category :</strong></td>
+                      <td>{{x.product.category}}</td>
+                  </tr>
+                  <tr>
+                      <td><strong>Subcategory :</strong></td>
+                      <td>{{x.product.subcategory}}</td>
+                  </tr>
+                  <tr>
+                      <td><strong>Quantity:</strong></td>
+                      <td>{{x.quantity}}</td>
+                  </tr>
+                  <tr>
+                      <td><strong>price:</strong></td>
+                      {% if x.product.offer %}
+                      <td style = "color:red;"> <s>${{x.product_price}}</s></td>
+                      {% else %}
+                      <td>${{x.product_price}}</td>
+                      {% endif %}
+                  </tr>
+                  {% if x.product.offer %}
+                  <tr>
+                   
+                    <td><strong>Offer Price</strong></td>
+                    <td style="color:green;"><strong>${{x.product.get_offer}}<strong></td>
+                    
+                </tr>
+                {% endif %}
+                  <tr>
+                      <td><strong>Thumbnail Image :</strong></td>
+                      <td><img src="{{x.product.image.url}}" style="height: 254px;width: 229px;border-radius: 96%;"  alt=""></td>
+                  </tr>
+              
+              
+  
+                  
+              
+              
+              </tbody>
+              </table>
+          
+       </div>
+    </div>
+    
+  </div>
+ 
+</div> 
+{% endif %}
+
+{% endfor %}
+
+ 
+
+
+
+
+
+
+  {% endblock body %}

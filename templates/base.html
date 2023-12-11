@@ -1,0 +1,393 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Gota eCommerce HTML5 Template</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="manifest" href="site.html">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/futura-std-font.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/meanmenu.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+   
+</head>
+
+<body>
+ 
+ <!-- header area start -->
+ <header class="header-area">
+    <div class="gota_top bg-soft d-none d-sm-block">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                    <div class="gota_lang">
+                        <ul>
+                            {% comment %} <li><a href="#"><i class="fal fa-chevron-down"></i></a> {% endcomment %}
+                                <ul class="additional_dropdown">
+                                    <li><a href="#"></a></li>
+                                </ul>
+                            </li>
+                            {% comment %} <li><a href="#"><i class="fal fa-chevron-down"></i></a> {% endcomment %}
+                                <ul class="additional_dropdown">
+                                    <li><a href="#"></a></li>
+                                    <li><a href="#"></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-4 offset-xl-5 col-lg-6 col-md-6 col-sm-6 text-end">
+                    <div class="gota_right">
+                        <ul>
+                             <li><a href="{% url "user_profile:wishlist" %}">Wishlist</a></li>
+                             {% if user.is_authenticated %}
+                            <li><a href="{% url "user_profile:profile"  %}">Account</a></li>
+                            {% else %}
+                            <li><a href="{% url "userauth:login"  %}">Account</a></li>
+                            {% endif %}
+                            
+                            {% if user.is_authenticated %}
+                                   <li><a href={% url "userauth:logout" %}>Logout</a></li>
+                            {% else %}
+                                   <li><a href={% url "userauth:login" %}>Login & register</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gota_bottom position-relative">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 d-none d-sm-block">
+                    <div class="gota_search">
+                        <form class="search_form" method="get" action={% url "main:shop" %}>
+                            {% csrf_token %}
+                            <button class="search_action"><i
+                                    class="fal fa-search d-sm-none d-md-block"></i></button>
+                            <input type="text" name="search" placeholder="search" />
+                        </form>
+                    </div>
+                </div>
+                <div class="col-xl-8 col-lg-8 col-md-4 col-sm-4">
+                    <div class="sidemenu sidemenu-1 d-lg-none d-md-block">
+                        <a class="open" href="#"><i class="fal fa-bars"></i></a>
+                    </div>
+                    <div class="main-menu">
+                        <nav id="mobile-menu">
+                            <ul>
+                                <li class=""><a href="{% url "main:home" %}">Home </a></li>
+
+                                <li class="position-static"><a href="{% url "main:shop" %}">Shop</a>
+                                    {% comment %} <ul class="mega_menu" data-background="{% static 'assets/img/mega-menu/product.jpg' %}">
+                                        <li>
+                                            <h4 class="mega_title">Shop Layout</h4>
+                                            <ul class="mega_item">
+                                                <li><a href="shop.html">Pagination</a></li>
+                                                <li><a href="shop.html">Ajax Load More</a></li>
+                                                <li><a href="shop-3-width.html">Infinite Scroll</a></li>
+                                                <li><a href="shop-right.html">Sidebar Right</a></li>
+                                                <li><a href="shop.html">Sidebar Left</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <h4 class="mega_title">shop pages</h4>
+                                            <ul class="mega_item">
+                                                <li><a href="shop-list.html">List View</a></li>
+                                                <li><a href="shop-sm.html">Small Products</a></li>
+                                                <li><a href="shop-large.html">Large Products</a></li>
+                                                <li><a href="shop-3-width.html">Shop — 3 Items</a></li>
+                                                <li><a href="shop-4.html">Shop — 4 Items</a></li>
+                                                <li><a href="shop-sm.html">Shop — 5 Items</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <h4 class="mega_title">Product Layout</h4>
+                                            <ul class="mega_item">
+                                                <li><a href="shop-sticky.html">Description Sticky</a></li>
+                                                <li><a href="shop-carousel.html">Product Carousel</a></li>
+                                                <li><a href="modern.html"> Gallery Modern</a></li>
+                                                <li><a href="single.html"> Thumbnail Left</a></li>
+                                                <li><a href="single-right.html">Thumbnail Right</a></li>
+                                                <li><a href="single-bottom.html"> Thumbnail Botttom</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+
+                                        </li>
+                                    </ul> {% endcomment %}
+                                </li>
+                                
+                                <li>
+                                        <img class="pl-45 pr-45" style="    height: 27px;" src="{% static 'assets/img/logo/logos.png' %}"  alt="">
+                                    </li>
+                                    
+                                
+                                    
+                                </li>
+                                <li><a href="{% url "main:faq" %}">FAQ</a></li>
+                                <li><a href="{% url "main:contact" %}">contact us </a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4">
+                    <div class="gota_cart gotat_cart_1 text-end">
+                        <a href="javascript:void(0)"><i class="fal fa-shopping-cart"></i>My Bag<span class="counter"> ({{cart_count}})</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- header area end -->
+<div class="search_area">
+    <div class="search_close">
+        <span><i class="fal fa-times"></i></span>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+                <div class="search-wrapper text-center">
+                    <h2>search</h2>
+                    <div class="search-filtering pt-30">
+                        <div class="search_tab">
+                            
+                            <div class="tab-content" id="myTabContent2">
+                                <div class="tab-pane fade show active" id="home2" role="tabpanel"
+                                    >
+
+                                </div>
+                                <div class="tab-pane fade" id="profile2" role="tabpanel"
+                                    >
+
+                                </div>
+                                <div class="tab-pane fade" id="contact2" role="tabpanel">
+
+                                </div>
+                                <div class="tab-pane fade" id="sportswear" role="tabpanel"
+                                    >
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main_search">
+                        <form action="{% url "main:shop" %}" method="get">
+                            <input type="text" name="search" placeholder="search products">
+                            <button class="m-search"><i class="fal fa-search d-sm-none d-md-block"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fix">
+    <div class="side-info">
+        <button class="side-info-close"><i class="fal fa-times"></i></button>
+        <div class="side-info-content">
+            <div class="mobile-menu"></div>
+            <div class="contact-infos mb-30">
+                <div class="contact-list mb-30">
+                    <h4>Office Address</h4>
+                    <p>123/A, Miranda City Likaoli
+                        Prikano, Dope</p>
+                </div>
+                <div class="contact-list mb-30">
+                    <h4>Phone Number</h4>
+                    <p>+0989 7876 9865 9</p>
+                    <p>+(090) 8765 86543 85</p>
+                </div>
+                <div class="contact-list mb-30">
+                    <h4>Email Address</h4>
+                    <p><a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dcb5b2bab39cb9a4bdb1acb0b9f2bfb3b1">[email&#160;protected]</a></p>
+                    <p><a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="97f2eff6fae7fbf2b9faf6fefbd7ffe2fab9f4f8fa">[email&#160;protected]</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="offcanvas-overlay"></div>
+
+<!-- cart area start  -->
+<div class="cart__sidebar">
+<div class="container">
+    <div class="cart__content">
+        <div class="cart-text">
+            <h3 class="mb-40">Shopping cart</h3>
+            {% for cart_item in cart_items %}
+            <div class="add_cart_product">
+                <div class="add_cart_product__thumb">
+                    <img src="{{cart_item.product.image.url}}"   alt="">
+                </div>
+                <div class="add_cart_product__content">
+                    <h5><a href="shop.html">{{cart_item.product.product_name}}</a></h5>
+                    <p>{{cart_item.quantity}} × {{cart_item.subtotal}}</p>
+                    <button class="cart_close"><i class="fal fa-times"></i></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="cart-icon">
+            <i class="fal fa-times"></i>
+        </div>
+        <div class="cart-bottom">
+            <div class="cart-bottom__text">
+                <span>Subtotal:</span>
+                <span class="end">${{total}}</span>
+                <a href={% url "cart:cart" %}>view cart</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="cart-offcanvas-overlay"></div>
+<!-- cart area end  -->
+
+
+{% block body %}
+
+{% endblock body %}
+
+
+ <!-- footer area start -->
+ <footer class="footer_area fix">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                <div class="company__info  wow fadeInUp " data-wow-duration=".s" data-wow-delay=".3s">
+                    <h3 class="f-title">contact info</h3>
+                    <ul>
+                        <li>Add: 734 Riverwood Drive, Suite 245 Cottonwood </li>
+                        <li>Beverly Hill, Melbourne, USA.</li>
+                        <li>Fax: (+100) 123 456 7890 - (+100) 123 456 7891</li>
+                    </ul>
+                    <div class="social__media mb-30">
+                        <h3 class="f-title">FOLLOW US ON</h3>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#"><i class="fab fa-dribbble"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                <div class="company__info wow fadeInUp " data-wow-duration=".7s" data-wow-delay=".4s">
+                    <h3 class="f-title">Get Help</h3>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Delivery Information</a></li>
+                        <li><a href="#">Sale Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Notice</a></li>
+                        <li><a href="#">Shopping FAQs</a></li>
+                        <li><a href="#">Returns & Refundss</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                <div class="company__info wow fadeInUp " data-wow-duration=".8s" data-wow-delay=".5s">
+                    <h3 class="f-title">Popular categories</h3>
+                    <ul>
+                        <li><a href="#">Sneaker</a></li>
+                        <li><a href="#">Clothing & Stools</a></li>
+                        <li><a href="#">Helmet for Women’s</a></li>
+                        <li><a href="#">Basketball</a></li>
+                        <li><a href="#">Mens Running</a></li>
+                        <li><a href="#">Footwear</a></li>
+                        <li><a href="#">Outerwears</a></li>
+                        <li><a href="#">Men’s</a></li>
+                        <li><a href="#">Kids & Young</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xl-3 offset-xl-1 col-lg-6 col-md-6 col-sm-12">
+                <div class="company__info wow fadeInUp " data-wow-duration=".9s" data-wow-delay=".6s">
+                    <h3 class="f-title">get in touch</h3>
+                    <p>Sign up for all the news about our latest arrivals and<br>
+                        get an exclusive early access shopping. Join <br>
+                        <span>60.000+ Subscribers</span> and get a new discount coupon<br> on every Saturday.
+                    </p>
+                    <div class="subscribe pt-20">
+                        <form action="#">
+                            <input type="email" placeholder="Enter your email here..." />
+                            <button>Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer__bottom pb-10 mt-60">
+            <div class="row">
+                
+                <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
+                    <div class="footer-menu">
+                        <ul class="text-end">
+                            <li><a href="">Site Map</a></li>
+                            <li><a href="">Search Terms</a></li>
+                            <li><a href="">Advanced Search </a></li>
+                            <li><a href="">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer area end -->
+
+
+<!-- JS here -->
+<script data-cfasync="false" src="https://wphix.com/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/modernizr-3.5.0.min.js' %}"></script>
+<script src="{% static 'assets/js/vendor/jquery-1.12.4.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/js/one-page-nav-min.js' %}"></script>
+<script src="{% static 'assets/js/slick.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.meanmenu.min.js' %}"></script>
+<script src="{% static 'assets/js/countdown.js' %}"></script>
+<script src="{% static 'assets/js/ajax-form.js' %}"></script>
+<script src="{% static 'assets/js/wow.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.scrollUp.min.js' %}"></script>
+<script src="{% static 'assets/js/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'assets/js/plugins.js' %}"></script>
+<script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+
+
+
+</body>
+
+
+
+</html>
