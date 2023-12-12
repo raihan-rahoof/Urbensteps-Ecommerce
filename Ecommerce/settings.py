@@ -104,11 +104,12 @@ WSGI_APPLICATION = "Ecommerce.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "Urbansteps",
-        "USER": "postgres",
-        "PASSWORD": "1234",
-        "HOST": "localhost",
+        "ENGINE": config('DATABASE_ENGINE',default='django.db.backends.sqlite3'),
+        "NAME": config('DATABASE_NAME', default='db.sqlite3'),
+        "USER": config('DATABASE_USER', default=''),
+        "PASSWORD": config('DATABASE_PASSWORD', default=''),
+        "HOST":  config('DATABASE_HOST', default=''),
+        "PORT": '5432'
     }
 }
 
