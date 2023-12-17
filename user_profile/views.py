@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from orders.models import *
-
+from django.http import HttpResponse
 from .models import *
 
 # Create your views here.
@@ -467,26 +467,39 @@ def view_returns(request, id):
 
 @login_required(login_url="userauth:login")
 def approve_return(request, id):
-    returned = OrderReturn.objects.get(id=id)
+    try:
+        # Get the returned order
+        returned = OrderReturn.objects.get(id=id)
+        returned.collected = True
+        returned.save()
 
-    returned.collected = True
-    returned.save()
+        # Get or create the Wallet for the user
+        refund, created = Wallet.objects.get_or_create(user=request.user)
 
-    refund = Wallet.objects.get(user=request.user)
-    refund.wallet += returned.amount
-    transaction = Transaction()
-    transaction.user = request.user
-    transaction.wallet = refund
-    transaction.amount = returned.amount
-    transaction.note = "Order return"
-    transaction.transaction = "Cr"
+        # Update the wallet amount and save
+        refund.wallet += returned.amount
+        refund.save()
 
-    transaction.save()
+        # Create a new transaction
+        transaction = Transaction.objects.create(
+            user=request.user,
+            wallet=refund,
+            amount=returned.amount,
+            note="Order return",
+            transaction="Cr"
+        )
 
-    refund.save()
+        return redirect("user_profile:returned_page")
 
-    return redirect("user_profile:returned_page")
+    except OrderReturn.DoesNotExist:
+        return HttpResponse("Order return not found.")
 
+    except Wallet.DoesNotExist:
+        return HttpResponse("Wallet not found.")
+
+    except Exception as e:
+        # Handle any other exceptions here
+        return HttpResponse(f"Error: {str(e)}")
 
 @login_required(login_url="userauth:login")
 def wishlist(request):
