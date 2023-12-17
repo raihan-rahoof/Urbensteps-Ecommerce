@@ -27,7 +27,20 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG',cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = [
+    "http://44.202.100.172",
+    "https://44.202.100.172",
+    "http://0.0.0.0",
+    "https://0.0.0.0",
+    "http://0.0.0.0:9090",
+    "https://urbansteps.site",
+    "https://urbansteps.site",
+
+]
+
 
 
 # Application definition
@@ -58,6 +71,7 @@ INSTALLED_APPS = [
     "orders",
     "coupons",
     "offers",
+    'corsheaders',
 ]
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
@@ -72,12 +86,44 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "Ecommerce.urls"
 
 # ID = 598798544155-jt994cv2morvtgjlpn6pbb1dqoqlmf02.apps.googleusercontent.com
 # SEC= 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
+
+CORS_ALLOWED_ORIGINS = [
+    "http://3.89.252.173",
+    "https://3.89.252.173",
+    "http://0.0.0.0",
+    "https://0.0.0.0",
+    "http://0.0.0.0:9090"
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    'access-control-allow-headers',
+    'access-control-allow-methods',
+    'access-control-allow-origin',
+    'content-type',
+    'x-csrftoken',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+
+
+
 
 
 TEMPLATES = [
@@ -153,8 +199,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
 # Default primary key field type
