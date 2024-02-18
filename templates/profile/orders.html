@@ -315,7 +315,7 @@
                   </div>
                   <div class="border-start h-100"></div>
                   {% if order.status == 'Deliverd' %}
-                  <h5 class="fw-normal mb-0"><a href="#!">Review</a></h5>
+                  <h5 class="fw-normal mb-0"><a href="{% url "main:product_details" order.product.id %}">Review</a></h5>
                   {% endif %}
                   
                   <div class="border-start h-100"></div>

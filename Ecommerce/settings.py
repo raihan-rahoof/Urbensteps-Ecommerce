@@ -27,7 +27,20 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG',cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = [
+    "http://44.202.100.172",
+    "https://44.202.100.172",
+    "http://0.0.0.0",
+    "https://0.0.0.0",
+    "http://0.0.0.0:9090",
+    "https://urbansteps.site",
+    "https://urbansteps.site",
+
+]
+
 
 
 # Application definition
@@ -39,6 +52,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'whitenoise.runserver_nostatic',
     # -------- Oauath---------------
     "django.contrib.sites",
     "allauth",
@@ -57,6 +71,7 @@ INSTALLED_APPS = [
     "orders",
     "coupons",
     "offers",
+    'corsheaders',
 ]
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
@@ -70,12 +85,45 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = "Ecommerce.urls"
 
 # ID = 598798544155-jt994cv2morvtgjlpn6pbb1dqoqlmf02.apps.googleusercontent.com
 # SEC= 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
+
+CORS_ALLOWED_ORIGINS = [
+    "http://3.89.252.173",
+    "https://3.89.252.173",
+    "http://0.0.0.0",
+    "https://0.0.0.0",
+    "http://0.0.0.0:9090"
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    'access-control-allow-headers',
+    'access-control-allow-methods',
+    'access-control-allow-origin',
+    'content-type',
+    'x-csrftoken',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+
+
+
 
 
 TEMPLATES = [
@@ -104,11 +152,12 @@ WSGI_APPLICATION = "Ecommerce.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "Urbansteps",
-        "USER": "postgres",
-        "PASSWORD": "1234",
-        "HOST": "localhost",
+        "ENGINE": config('DATABASE_ENGINE',default='django.db.backends.sqlite3'),
+        "NAME": config('DATABASE_NAME', default='db.sqlite3'),
+        "USER": config('DATABASE_USER', default=''),
+        "PASSWORD": config('DATABASE_PASSWORD', default=''),
+        "HOST":  config('DATABASE_HOST', default=''),
+        "PORT": '5432'
     }
 }
 
@@ -151,6 +200,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
 # Default primary key field type
@@ -186,3 +236,14 @@ RECAPTCHA_PUBLIC_KEY = '6LcPMBspAAAAAH9MuQVHGq6Cv_srNEBbAaeqBFE_'
 RECAPTCHA_PRIVATE_KEY = '6LcPMBspAAAAAG5-ZmwUgUif3tpaRKr0jR9yUZNq'
 
 RECAPTCHA_REQUIRED_SCORE = 0.85
+
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_SIGNATURE_NAME = config('AWS_S3_SIGNATURE_NAME')
+AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
+AWS_S3_FILE_OVERWRITE = config('AWS_S3_FILE_OVERWRITE',cast=bool)
+AWS_DEFAULT_ACL =  None
+AWS_S3_VERITY = config('AWS_S3_VERITY',cast=bool)
+DEFAULT_FILE_STORAGE = config('DEFAULT_FILE_STORAGE')
